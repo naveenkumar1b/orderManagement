@@ -1,0 +1,39 @@
+#login .login-box-body {
+    background: #e8ecf2!important;
+    color: #3c8dbc!important;
+    font-size: 15px;
+    text-align: center;
+    position: relative;
+    /* height: em; */
+    top: 170px;
+}
+#login .login-box-body {
+    background: #e8ecf2!important;
+    color: #3c8dbc!important;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-right: 35%;
+    margin-left: 35%;
+}
+.login-box-msg {
+    font-weight: bold;
+    color: #5f6368;
+    padding: 5px;
+}
+.text-align{
+  margin: 1%;
+}
+
+.mar-lft-1{
+  margin-left: 4px;
+}
+.alert-danger {
+    color: red !important;
+    background-color: inherit !important;
+    border: none !important;
+    font-size: 13px;
+    text-align: left;
+}
+.pad-0{
+    padding: 0px !important;
+}

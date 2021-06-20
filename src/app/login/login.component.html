@@ -1,0 +1,32 @@
+
+<form [formGroup]="orderManagementForm" autocomplete="off">
+    <div id="login" class="login-box">
+    <div class="login-box-body">
+      <p class="login-box-msg">Sign in to continue</p>
+        <div class="text-align">
+          Username:
+          <input class="form-control" id="username" name="username" formControlName="username" type="text" autocomplete="nope" 
+            #username required type="text" placeholder="Username">
+          <div class="alert alert-danger mar-lft-1 pad-0" *ngIf="adminAuthFormValidationModel['username']['errorMessgesDisplay']">
+            {{adminAuthFormValidationModel['username']['errorMessgesDisplay']}}
+          </div>
+        </div>
+        <div class="text-align">
+          Password:
+          <input #password formControlName="password" class="mar-lft-1" id="password" name="password" type="password" 
+            class="form-control" placeholder="Password" minlength="8">
+            <div class="alert alert-danger mar-lft-1 pad-0"
+                *ngIf="adminAuthFormValidationModel['password']['errorMessgesDisplay']">
+                {{adminAuthFormValidationModel['password']['errorMessgesDisplay']}}
+            </div>
+        </div>
+        <div class="text-align">
+            <input type="checkbox" (click)="saveLoginData($event)"/>
+            <span class="text-align">Remember me</span>
+          </div>
+        <div class="text-align">
+          <button class="text-align btn btn-style" [disabled]="!orderManagementForm.valid" type="button" (click)="login()">Sign In</button>
+        </div>
+    </div>
+  </div>
+</form>

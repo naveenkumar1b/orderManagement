@@ -1,0 +1,191 @@
+<div class="pad-8">
+    <div class="container align-right pad-5" style="max-width: 100% !important;">
+        <button class="btn btn-style" (click)="addNewOrder();open(mymodal)">New Order</button>
+    </div>
+
+    <div class="panel panel-primary panel-style">
+        <div class="panel-heading">Order Management</div>
+        <div class="table-container">
+            <table #dt class="table table-bordered wd-100">
+                <thead class="wd-100">
+                    <tr class="wd-100">
+                        <th class="pad-8 wd-5" rowspan="2" style="vertical-align: middle !important;">
+                            Sr. No.
+                        </th>
+                        <th class="pad-8 wd-10" style="vertical-align: middle !important;">
+                            Order Number
+                        </th>
+                        <th class="pad-8 wd-12" rowspan="2" style="vertical-align: middle !important;">
+                            Due Date
+                        </th>
+                        <th  class="pad-8 wd-17" style="vertical-align: middle !important;">
+                            Name of Buyer
+                        </th>
+                        <th  class="pad-8 wd-17" style="vertical-align: middle !important;">
+                            Address
+                        </th>
+                        <th class="pad-8 wd-10" style="vertical-align: middle !important;">
+                            Contact Number
+                        </th>
+                        <th class="pad-8 wd-10" style="vertical-align: middle !important;">
+                            Total Amount
+                        </th>
+                        <th class="pad-8 align-center wd-19" rowspan="2" style="vertical-align: middle !important;">
+                            Action(s)
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="pad-8 wd-10">
+                            <input style="width: 100%;" autofocus [(ngModel)]="filters.Id" (input)="filter(filters.Id)"/>
+                        </th>
+                        <th class="pad-8 wd-17">
+                            <input style="width: 100%;" [(ngModel)]="filters.name" (input)="filter(filters.name)"/>
+                        </th>
+                        <th class="pad-8 wd-17">
+                            <input style="width: 100%;" [(ngModel)]="filters.address" (input)="filter(filters.address)"/>
+                        </th>
+                        <th class="pad-8 wd-10">
+                            <input style="width: 100%;" [(ngModel)]="filters.contact_number" (input)="filter(filters.contact_number)"/>
+                        </th>
+                        <th class="pad-8 wd-10">
+                            <input style="width: 100%;" [(ngModel)]="filters.amount" (input)="filter(filters.amount)"/>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="table-body-scroll wd-100">
+                    <tr *ngFor="let order of ordersListData; let i=index">
+                        <td class="pad-8 wd-5 break-word">
+                            {{i+1}}
+                        </td>
+                        <td class="pad-8 wd-10 break-word">
+                            {{order['Id']}}
+                        </td>
+                        <td class="pad-8 wd-12 break-word">
+                            {{order['due_date']}}
+                        </td>
+                        <td class="pad-8 wd-17 break-word">
+                            {{order['name']}}
+                        </td>
+                        <td class="pad-8 wd-17 break-word">
+                            {{order['address']}}
+                        </td>
+                        <td class="pad-8 wd-10 break-word">
+                            {{order['contact_number']}}
+                        </td>
+                        <td  class="pad-8 wd-10 break-word">
+                            {{order['amount']}}
+                        </td>
+                        <td class="pad-8 align-center wd-19">
+                            <button class="btn btn-style mr-5" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"
+                                (click)="edit(order,i);open(mymodal);">Edit</button>
+                            <button class="btn btn-style" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"
+                                (click)="deleteRecord(order)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="table-footer">
+                    <div class="pd-8 align-right">
+                        <b>Total Order(s): </b>{{ordersListData.length}}
+                    </div>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div> 
+    <ng-template #mymodal let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title"> {{isEdit ? 'Edit' : "New"}} Order</h4>
+            <button type="button" class="close btn btn-style" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="orderManagementForm" autocomplete="off">
+            <table class="border-none">
+                    <tr>
+                        <td class="wd-50 border-none">
+                        <b>Order Id: </b>
+                        </td>
+                        <td class="wd-50 border-none">
+                            <input class="form-control" id="Id" name="Id" formControlName="Id" type="text" autocomplete="nope" 
+                                #Id required type="text" placeholder="Order ID">
+                            <div class="alert alert-danger pad-0" *ngIf="orderFormValidationModel['Id']['errorMessgesDisplay']">
+                                {{orderFormValidationModel['Id']['errorMessgesDisplay']}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="wd-50 border-none">
+                            <b>Due Date: </b>
+                        </td>
+                        <td class="wd-50 border-none">
+                                <input class="form-control" placeholder="yyyy-mm-dd"
+                                    name="dp"  ngbDatepicker #d="ngbDatepicker" style="width: 80%;"
+                                    id="dueDate" name="dueDate" formControlName="dueDate" autocomplete="nope" 
+                                required>
+                                <button class="btn btn-style" style="margin-top: -14%;float: right;" (click)="d.toggle()"></button>
+                            <div class="alert alert-danger pad-0" *ngIf="orderFormValidationModel['dueDate']['errorMessgesDisplay']">
+                                {{orderFormValidationModel['dueDate']['errorMessgesDisplay']}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="wd-50 border-none">
+                            <b>Name: </b>
+                        </td>
+                        <td class="wd-50 border-none">
+                            <input class="form-control" id="name" name="name" formControlName="name" type="text" autocomplete="nope" 
+                                required type="text" placeholder="Enter name">
+                                <div class="alert alert-danger pad-0" *ngIf="orderFormValidationModel['name']['errorMessgesDisplay']">
+                                    {{orderFormValidationModel['name']['errorMessgesDisplay']}}
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="wd-50 border-none">
+                            <b>Address: </b>
+                        </td>
+                        <td class="wd-50 border-none">
+                            <input class="form-control" id="address" name="address" formControlName="address" type="text" autocomplete="nope" 
+                                #Id required type="text" placeholder="Enter address">
+                                <div class="alert alert-danger pad-0" *ngIf="orderFormValidationModel['address']['errorMessgesDisplay']">
+                                    {{orderFormValidationModel['address']['errorMessgesDisplay']}}
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="wd-50 border-none">
+                            <b>Contact Number: </b>
+                        </td>
+                        <td class="wd-50 border-none">
+                            <input class="form-control" id="contactNumber" name="contactNumber" formControlName="contactNumber" type="text" autocomplete="nope" 
+                                #Id required type="text" placeholder="Enter contact number">
+                                <div class="alert alert-danger pad-0" *ngIf="orderFormValidationModel['contactNumber']['errorMessgesDisplay']">
+                                    {{orderFormValidationModel['contactNumber']['errorMessgesDisplay']}}
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="wd-50 border-none">
+                            <b>Total Amount: </b>
+                        </td>
+                        <td class="wd-50 border-none">
+                            <input class="form-control" id="amount" name="amount" formControlName="amount" type="text" autocomplete="nope" 
+                                #Id required type="text" placeholder="Enter total amount">
+                                <div class="alert alert-danger pad-0" *ngIf="orderFormValidationModel['amount']['errorMessgesDisplay']">
+                                    {{orderFormValidationModel['amount']['errorMessgesDisplay']}}
+                                </div>
+                        </td>
+                    </tr>
+            </table>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-style mr-5" (click)="clearFields();">Clear</button>
+            <button type="button" class="btn btn-style mr-5" [disabled]="!orderManagementForm.valid" (click)="updateOrders();modal.close('Save click')">Save</button>
+            <button type="button" class="btn btn-style" (click)="modal.close('Save click')">Close</button>
+        </div>
+    </ng-template>
+</div>
